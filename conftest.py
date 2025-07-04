@@ -1,13 +1,15 @@
 import pytest
 import os
 import json
+import pytz
 from datetime import datetime
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
     report_dir = "reports"
-    now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    config.option.htmlpath = f"{report_dir}/report_{now}.html"
+    ist_time = datetime.now(pytz.timezone("Asia/Kolkata"))
+    timestamp = ist_time.strftime("%Y-%m-%d_%H-%M-%S")
+    config.option.htmlpath = f"{report_dir}/report_{timestamp}.html"
 
 @pytest.fixture
 def load_user_data():
