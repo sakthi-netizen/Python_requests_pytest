@@ -31,11 +31,11 @@ jobs:
   
       - name: Run Tests
         run: |
-          pytest -s --html=report.html --self-contained-html
+          pytest -s --html=report_$(date +%Y-%m-%d_%H-%M-%S).html --self-contained-html
   
       - name: Upload report
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report
-          path: report.html
+          path: report_*.html
     
