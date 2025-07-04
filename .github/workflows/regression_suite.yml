@@ -1,0 +1,41 @@
+name: Regression Suite
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '30 2 * * *'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+  
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.13'
+          
+      - name: Install dependencies
+        run: |
+          python -mpip install --upgrade pip
+          pip install -r requirements.txt
+  
+      - name: Run Tests
+        run: |
+          pytest -s --html=report_$(date +%Y-%m-%d_%H-%M-%S).html --self-contained-html
+  
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-report
+          path: reports/report_*.html
+    
